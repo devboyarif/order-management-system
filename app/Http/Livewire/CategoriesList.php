@@ -19,6 +19,8 @@ class CategoriesList extends Component
 
     public bool $showModal = false;
 
+    public int $editedCategoryId = 0;
+
     public array $active = [];
 
     public function openModal()
@@ -45,11 +47,27 @@ class CategoriesList extends Component
     {
         $this->validate();
 
-        $this->category->position = Category::max('position') + 1;
+        if ($this->editedCategoryId === 0) {
+            $this->category->position = Category::max('position') + 1;
+        }
 
         $this->category->save();
 
-        $this->reset('showModal');
+        $this->resetValidation();
+        $this->reset('showModal', 'editedCategoryId');
+    }
+
+    public function editCategory($categoryId)
+    {
+        $this->editedCategoryId = $categoryId;
+
+        $this->category = Category::find($categoryId);
+    }
+
+    public function cancelCategoryEdit()
+    {
+        $this->resetValidation();
+        $this->reset('editedCategoryId');
     }
 
     public function toggleIsActive($categoryId)
