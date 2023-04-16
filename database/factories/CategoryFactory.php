@@ -20,6 +20,7 @@ class CategoryFactory extends Factory
             'name' => $this->faker->name,
             'slug' => $this->faker->slug,
             'is_active' => $this->faker->boolean,
+            'position' => $this->faker->numberBetween(1, 100),
         ];
     }
 }
