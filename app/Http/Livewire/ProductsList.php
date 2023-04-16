@@ -16,6 +16,10 @@ class ProductsList extends Component
 
     public array $countries = [];
 
+    public array $selected = [];
+
+    protected $listeners = ['delete', 'deleteSelected'];
+
     public string $sortColumn = 'products.name';
 
     public string $sortDirection = 'asc';
@@ -82,5 +86,37 @@ class ProductsList extends Component
             $this->reset('sortDirection');
             $this->sortColumn = $column;
         }
+    }
+
+    public function getSelectedCountProperty(): int
+    {
+        return count($this->selected);
+    }
+
+    public function deleteConfirm($method, $id = null): void
+    {
+        $this->dispatchBrowserEvent('swal:confirm', [
+            'type'  => 'warning',
+            'title' => 'Are you sure?',
+            'text'  => '',
+            'id'    => $id,
+            'method' => $method,
+        ]);
+    }
+
+    public function delete($id): void
+    {
+        $product = Product::findOrFail($id);
+
+        $product->delete();
+    }
+
+    public function deleteSelected(): void
+    {
+        $products = Product::whereIn('id', $this->selected)->get();
+
+        $products->each->delete();
+
+        $this->reset('selected');
     }
 }
