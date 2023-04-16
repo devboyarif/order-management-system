@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Livewire\ProductsList;
 use App\Http\Livewire\CategoriesList;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
@@ -29,6 +30,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('categories', CategoriesList::class)->name('categories.index');
+    Route::get('products', ProductsList::class)->name('products.index');
 });
 
 require __DIR__.'/auth.php';
