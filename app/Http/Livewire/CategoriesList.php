@@ -23,6 +23,8 @@ class CategoriesList extends Component
 
     public array $active = [];
 
+    protected $listeners = ['delete'];
+
     public function openModal()
     {
         $this->showModal = true;
@@ -68,6 +70,22 @@ class CategoriesList extends Component
     {
         $this->resetValidation();
         $this->reset('editedCategoryId');
+    }
+
+    public function deleteConfirm($method, $id = null)
+    {
+        $this->dispatchBrowserEvent('swal:confirm', [
+            'type'   => 'warning',
+            'title'  => 'Are you sure?',
+            'text'   => '',
+            'id'     => $id,
+            'method' => $method,
+        ]);
+    }
+
+    public function delete($id)
+    {
+        Category::findOrFail($id)->delete();
     }
 
     public function toggleIsActive($categoryId)
