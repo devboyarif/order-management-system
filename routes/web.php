@@ -1,11 +1,12 @@
 <?php
 
+use App\Models\Product;
+use App\Http\Livewire\OrdersList;
 use App\Http\Livewire\ProductForm;
 use App\Http\Livewire\ProductsList;
 use App\Http\Livewire\CategoriesList;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
-use App\Models\Product;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,6 +36,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+    Route::get('orders', OrdersList::class)->name('orders.index');
     Route::get('categories', CategoriesList::class)->name('categories.index');
     Route::get('products', ProductsList::class)->name('products.index');
     Route::get('products/create', ProductForm::class)->name('products.create');
