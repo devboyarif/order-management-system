@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Product;
+use App\Http\Livewire\OrderForm;
 use App\Http\Livewire\OrdersList;
 use App\Http\Livewire\ProductForm;
 use App\Http\Livewire\ProductsList;
@@ -37,6 +38,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('orders', OrdersList::class)->name('orders.index');
+    Route::get('orders/create', OrderForm::class)->name('orders.create');
+    Route::get('orders/{order}', OrderForm::class)->name('orders.edit');
     Route::get('categories', CategoriesList::class)->name('categories.index');
     Route::get('products', ProductsList::class)->name('products.index');
     Route::get('products/create', ProductForm::class)->name('products.create');
