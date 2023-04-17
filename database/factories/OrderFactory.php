@@ -19,7 +19,7 @@ class OrderFactory extends Factory
     {
         return [
             'user_id' => User::inRandomOrder()->value('id'),
-            'order_date' => $this->faker->date(),
+            'order_date' => $this->faker->dateTimeBetween('-1 year', 'now'),
             'subtotal' => $this->faker->numberBetween(100, 10000),
             'taxes' => config('app.orders.taxes'),
             'total' => $this->faker->numberBetween(100, 10000),

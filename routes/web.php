@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Order;
 use App\Models\Product;
 use App\Http\Livewire\OrderForm;
 use App\Http\Livewire\OrdersList;
@@ -21,9 +22,21 @@ use App\Http\Controllers\ProfileController;
 */
 
 Route::get('/', function () {
-    $product = Product::first();
-    // return $product->categories;
-    return $product->categories->pluck('id')->toArray();
+    return $data = Order::query()
+    ->select('order_date', \DB::raw('sum(total) as total'))
+    ->where('order_date', '>=', now()->subDays(7))
+    ->groupBy('order_date')
+    ->get();
+
+    return [
+        'datasets' => [
+            [
+                'label' => 'Total revenue from last 7 days',
+                'data' => $data->map(fn (Order $order) => $order->total / 100),
+            ]
+        ],
+        'labels' => $data->map(fn (Order $order) => $order->order_date->format('d/m/Y')),
+    ];
 
     return view('welcome');
 });
