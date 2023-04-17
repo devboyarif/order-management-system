@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Livewire\ProductForm;
 use App\Http\Livewire\ProductsList;
 use App\Http\Livewire\CategoriesList;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
+use App\Models\Product;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,6 +19,10 @@ use App\Http\Controllers\ProfileController;
 */
 
 Route::get('/', function () {
+    $product = Product::first();
+    // return $product->categories;
+    return $product->categories->pluck('id')->toArray();
+
     return view('welcome');
 });
 
@@ -31,6 +37,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('categories', CategoriesList::class)->name('categories.index');
     Route::get('products', ProductsList::class)->name('products.index');
+    Route::get('products/create', ProductForm::class)->name('products.create');
+    Route::get('products/{product}', ProductForm::class)->name('products.edit');
 });
 
 require __DIR__.'/auth.php';
